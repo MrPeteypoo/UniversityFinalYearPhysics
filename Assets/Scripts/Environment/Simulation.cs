@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Launcher : MonoBehaviour
+public class Simulation : MonoBehaviour
 {
 
     // Use this for initialization
