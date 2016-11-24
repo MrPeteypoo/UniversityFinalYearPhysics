@@ -1,6 +1,6 @@
-﻿using GameObject        = UnityEngine.GameObject;
-using MonoBehaviour     = UnityEngine.MonoBehaviour;
-using Vector3           = UnityEngine.Vector3;
+﻿using GameObject    = UnityEngine.GameObject;
+using MonoBehaviour = UnityEngine.MonoBehaviour;
+using Vector3       = UnityEngine.Vector3;
 
 
 namespace PSI
@@ -28,6 +28,13 @@ namespace PSI
         /// </summary>
         /// <param name="rigidbody">The Rigidbody to be registered.</param>
         public abstract void Register (Rigidbody rigidbody);
+
+        /// <summary>
+        /// Unregisters the given Rigidbody. This means it will no longer be tracked by the Physics system, resulting
+        /// in the object no longer being simulated.
+        /// </summary>
+        /// <param name="rigidbody">Rigidbody.</param>
+        public abstract void Unregister (Rigidbody rigidbody);
 
         #endregion
 

@@ -3,8 +3,6 @@ using Assert            = UnityEngine.Assertions.Assert;
 using GameObject        = UnityEngine.GameObject;
 using MonoBehaviour     = UnityEngine.MonoBehaviour;
 
-using System.Collections.Generic;
-
 
 namespace PSI
 {
@@ -19,7 +17,7 @@ namespace PSI
         /// <summary>
         /// Stores the registered Rigidbody objects in the scene.
         /// </summary>
-        MappedList<Rigidbody> m_rigidbodies = new MappedList<Rigidbody>();
+        MappedPopList<Rigidbody> m_rigidbodies = new MappedPopList<Rigidbody> (100);
 
         #endregion
 
@@ -33,6 +31,16 @@ namespace PSI
         public override void Register (Rigidbody rigidbody)
         {
             m_rigidbodies.Add (rigidbody);
+        }
+
+        /// <summary>
+        /// Unregisters the given Rigidbody. This means it will no longer be tracked by the Physics system, resulting
+        /// in the object no longer being simulated.
+        /// </summary>
+        /// <param name="rigidbody">Rigidbody.</param>
+        public override void Unregister (Rigidbody rigidbody)
+        {
+            m_rigidbodies.SwapAndPop (rigidbody);
         }
 
         #endregion
