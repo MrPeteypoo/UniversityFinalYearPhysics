@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 /// <summary>
 /// A wrapper around a List which features swap'n'pop functionality and increases the List capacity by a fixed amount
-/// when the maximum capacity is reached.
+/// when the maximum capacity is reached. The inclusion of swap'n'pop features mean that, as long as object order isn't
+/// important, objects can be removed with O(1) complexity.
 /// </summary>
-[Serializable]
 public partial class PopList<T> : IList<T>
 {
     #region Internal data
@@ -274,6 +274,7 @@ public partial class PopList<T> : IList<T>
         m_data.Insert (index, item);
         ++m_end;
     }
+
     /// <summary>
     /// Removes the first occurrence of the given object from the PopList. Uses EqualityComparer<T>.Default.
     /// </summary>
@@ -298,7 +299,7 @@ public partial class PopList<T> : IList<T>
     /// Removes the item at the given index. Removing the last item will just call PopBack().
     /// </summary>
     /// <param name="index">The index of the item to be removed.</param>
-    public void RemoveAt (int index)
+    public virtual void RemoveAt (int index)
     {
         // Use the pop functionality for speed.
         if (index == m_end - 1)
@@ -346,21 +347,7 @@ public partial class PopList<T> : IList<T>
             throw new ArgumentOutOfRangeException ("index", "Must be a valid index.");
         }
 
-        InternalSwapBack (index);
-        InternalPopBack();
-    }
-
-    /// <summary>
-    /// Swaps the item at the given index with the last item in the PopList.
-    /// </summary>
-    /// <param name="index">The index of the item to be swapped.</param>
-    protected virtual void InternalSwapBack (int index)
-    {
-        var last = m_end - 1;
-        var temp = m_data[index];
-
-        m_data[index] = m_data[last];
-        m_data[last] = temp;
+        InternalSwapAndPop (index);
     }
 
     /// <summary>
@@ -369,6 +356,16 @@ public partial class PopList<T> : IList<T>
     protected virtual void InternalPopBack()
     {
         m_data[--m_end] = default (T);
+    }
+
+    /// <summary>
+    /// Swaps the item at the given index with the last item and pops it from the back.
+    /// </summary>
+    /// <param name="index">The item to be removed.<</param>
+    protected virtual void InternalSwapAndPop (int index)
+    {
+        m_data[index] = m_data[m_end - 1];
+        PopBack();
     }
 
     #endregion
