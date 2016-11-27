@@ -20,7 +20,7 @@ namespace PSI
 
         #endregion
 
-        #region Object registration
+        #region Registration
 
         /// <summary>
         /// Registers the given Rigidbody to be simulated by the system. This will cause forces to apply which will
@@ -34,7 +34,7 @@ namespace PSI
         /// in the object no longer being simulated.
         /// </summary>
         /// <param name="rigidbody">Rigidbody.</param>
-        public abstract void Unregister (Rigidbody rigidbody);
+        public abstract void Deregister (Rigidbody rigidbody);
 
         #endregion
 

@@ -21,7 +21,7 @@ namespace PSI
 
         #endregion
 
-        #region Physics methods
+        #region Registration
 
         /// <summary>
         /// Registers the given Rigidbody to be simulated by the system. This will cause forces to apply which will
@@ -31,6 +31,7 @@ namespace PSI
         public override void Register (Rigidbody rigidbody)
         {
             m_rigidbodies.Add (rigidbody);
+            var crap = new UnityEngine.Rigidbody();
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace PSI
         /// in the object no longer being simulated.
         /// </summary>
         /// <param name="rigidbody">Rigidbody.</param>
-        public override void Unregister (Rigidbody rigidbody)
+        public override void Deregister (Rigidbody rigidbody)
         {
             m_rigidbodies.SwapAndPop (rigidbody);
         }
