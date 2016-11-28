@@ -61,7 +61,7 @@ namespace PSI
         public static Physics FindSystem()
         {
             var engine = GameObject.FindGameObjectWithTag (Tags.engine);
-            var system = engine.GetComponent<Physics>();
+            var system = engine ? engine.GetComponent<Physics>() : null;
 
             return system ?? defaultSystem;
         }

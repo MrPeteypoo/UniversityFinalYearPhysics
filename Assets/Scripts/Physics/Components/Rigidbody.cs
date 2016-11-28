@@ -6,6 +6,7 @@ using Mathf                     = UnityEngine.Mathf;
 using MonoBehaviour             = UnityEngine.MonoBehaviour;
 using Range                     = UnityEngine.RangeAttribute;
 using SerializeField            = UnityEngine.SerializeField;
+using Time                      = UnityEngine.Time;
 using Vector3                   = UnityEngine.Vector3;
 
 
@@ -63,9 +64,19 @@ namespace PSI
         Vector3 m_momentum = Vector3.zero;
 
         /// <summary>
-        /// Accumulated force to be applied next frame.
+        /// Traditional force which should be applied taking into account the mass of an object.
         /// </summary>
         Vector3 m_force = Vector3.zero;
+
+        /// <summary>
+        /// Acceleration which disregards an objects mass.
+        /// </summary>
+        Vector3 m_acceleration = Vector3.zero;
+
+        /// <summary>
+        /// The Physics system the object is currently registered with.
+        /// </summary>
+        Physics m_system = null;
 
         #endregion
 
@@ -161,11 +172,27 @@ namespace PSI
         }
 
         /// <summary>
-        /// Gets the accumulated force to be applied before the next frame.
+        /// Gets the force of the movement force of the objects momentum.
         /// </summary>
-        public Vector3 force
+        public Vector3 momentumForce
+        {
+            get { return m_momentum / Time.deltaTime; }
+        }
+
+        /// <summary>
+        /// Gets the amount of force being applied to the object before the next frame, mass will be taken into account.
+        /// </summary>
+        public Vector3 accumulatedForce
         {
             get { return m_force; }
+        }
+
+        /// <summary>
+        /// Gets the amount of mass-independant acceleration that will be applied to the object before the next frame.
+        /// </summary>
+        public Vector3 accumulatedAcceleration
+        {
+            get { return m_acceleration; }
         }
 
         #endregion
@@ -178,10 +205,21 @@ namespace PSI
         void OnEnable()
         {
             // Ensure we have a physics system to register with.
-            var physics = Physics.FindSystem();
-            Assert.IsNotNull (physics, "Couldn't find a Physics system to register with.");
+            var m_system = Physics.FindSystem();
+            Assert.IsNotNull (m_system, "Couldn't find a Physics system to register with.");
 
-            physics.Register (this);
+            m_system.Register (this);
+        }
+
+        /// <summary>
+        /// Deregisters the object from the Physics system it was initially registered to.
+        /// </summary>
+        void OnDisable()
+        {
+            if (m_system && this)
+            {
+                m_system.Deregister (this);
+            }
         }
 
         #endregion
@@ -189,11 +227,42 @@ namespace PSI
         #region Force
 
         /// <summary>
-        /// Resets the accumulated force to zero.
+        /// Adds a continuous force to the object, this takes into account the objects mass and ideally should be
+        /// called each frame.
         /// </summary>
-        public void ResetForce()
+        /// <param name="force">The desired force to be applied.</param>
+        public void AddForce (Vector3 force)
+        {
+            m_force += force;
+        }
+
+        /// <summary>
+        /// Adds a continuous acceleration to the object, this ignores the objects mass and ideally should be
+        /// called each frame.
+        /// </summary>
+        /// <param name="force">The desired force to be applied.</param>
+        public void AddAcceleration (Vector3 acceleration)
+        {
+            m_acceleration += acceleration;
+        }
+
+        /// <summary>
+        /// Adds an impulsive force which results in an immediate increase in velocity. This takes into account the
+        /// objects mass and shouldn't be called every frame.
+        /// </summary>
+        /// <param name="force">The desired force to be applied.</param>
+        public void AddImpulse (Vector3 impulse)
+        {
+            m_force += impulse / Time.fixedDeltaTime;
+        }
+
+        /// <summary>
+        /// Resets the each accumulated force to zero.
+        /// </summary>
+        public void ResetAccumulatedForces()
         {
             m_force = Vector3.zero;
+            m_acceleration = Vector3.zero;
         }
 
         #endregion
