@@ -71,7 +71,7 @@ public class MappedPopList<T> : PopList<T>
     /// <param name="item">The item to be added.</param>
     public override void Add (T item)
     {
-        if (Contains (item))
+        if (!Contains (item))
         {
             // The item will be added to the end.
             m_indices.Add (item, Count);
