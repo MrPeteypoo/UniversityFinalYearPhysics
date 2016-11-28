@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace PSI
 {
-    public class Material : MonoBehaviour
+    public class PhysicsMaterial : MonoBehaviour
     {
 
         // Use this for initialization
