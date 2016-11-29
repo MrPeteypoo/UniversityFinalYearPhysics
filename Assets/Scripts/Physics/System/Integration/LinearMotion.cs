@@ -7,12 +7,12 @@ namespace PSI
     /// Contains functions used to integrate different physical simulations such as linear motion and angular momentum
     /// using the Runge-Kutta 4th Order numerical integration method.
     /// </summary>
-    public static partial class RK4Integrator
+    public static partial class RK4Integration
     {
         /// <summary>
-        /// Integrates the position and momentum of a rigidbody.
+        /// Calculates the position and momentum of a rigidbody.
         /// </summary>
-        public static class LinearMotion
+        public sealed class LinearMotion
         {
             /// <summary>
             /// Update the momentum and position of the given rigidbody using the RK4 integration method.
@@ -31,8 +31,7 @@ namespace PSI
                 var third   = Evaluation.Evaluate (rigidbody, second, halfDelta);
                 var fourth  = Evaluation.Evaluate (rigidbody, third, deltaTime);
 
-                // Now we use Taylor Series expansion to weight the values.
-                // Formula = 1/6 * (dxdt1 + 2 * (dxdt2 + dxdt3) + dxdt4).
+                // Now we use Taylor Series expansion to weight the values: 1/6 * (dxdt1 + 2 * (dxdt2 + dxdt3) + dxdt4).
                 var translation = sixth * (first.velocity + 2f * (second.velocity + third.velocity) + fourth.velocity);
                 var momentumInc = sixth * (first.force + 2f * (second.force + third.force) + fourth.force);
 
@@ -76,19 +75,22 @@ namespace PSI
                 /// <param name="deltaTime">The time-step to apply from the previous evaluation.</param>
                 public static Evaluation Evaluate (Rigidbody rigidbody, Evaluation previous, float deltaTime)
                 {
+                    // Integrating force in respect to time gives us momentum.
                     var momentum = rigidbody.momentum + previous.force * deltaTime;
-                    var velocity = momentum / rigidbody.mass;
 
-                    return new Evaluation (velocity, CalculateForce (rigidbody, deltaTime));
+                    // Integrate velocity by dividing by the objects mass.
+                    var velocity = (momentum) / rigidbody.mass;
+
+                    return new Evaluation (velocity, CalculateForce (rigidbody, momentum));
                 }
 
                 /// <summary>
-                /// Calculates the force of the object.
+                /// Calculates the forces applied to the object.
                 /// </summary>
                 /// <returns>The total force to be applied to the object.</returns>
                 /// <param name="rigidbody">The Rigidbody containing accumulated forces.</param>
-                /// <param name="deltaTime">The time-step to take when calculating the moving force.</param>
-                private static Vector3 CalculateForce (Rigidbody rigidbody, float deltaTime)
+                /// <param name="momentum">The momentum of the object at the current time-step.</param>
+                private static Vector3 CalculateForce (Rigidbody rigidbody, Vector3 momentum)
                 {
                     // Force is assumed to be added every frame.
                     var force = rigidbody.accumulatedForce;
@@ -97,8 +99,13 @@ namespace PSI
                     // must multiply it by the objects mass.
                     var acceleration = rigidbody.accumulatedAcceleration * rigidbody.mass;
 
+                    // Calculate resisted motion according to Mathematics for 3D Game Rogramming and Computer Graphics.
+                    // Formula: mg - mkx'. "mg" is contained within acceleration, momentum gives us "mx'" and "k" is
+                    // the rigidbody drag co-efficient.
+                    var resistance = momentum * rigidbody.drag;
+
                     // Add them together and we're done!
-                    return force + acceleration;
+                    return force + acceleration - resistance;
                 }
             }
         }

@@ -53,7 +53,7 @@ namespace PSI
                 }
 
                 // Use RK4 to simulate the change in momentum and position of the object.
-                RK4Integrator.LinearMotion.Integrate (rigidbody, deltaTime);
+                RK4Integration.LinearMotion.Integrate (rigidbody, deltaTime);
 
                 // Ensure we reset the forces correctly.
                 rigidbody.ResetAccumulatedForces();
