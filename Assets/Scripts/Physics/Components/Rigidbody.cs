@@ -4,6 +4,7 @@ using DisallowMultipleComponent = UnityEngine.DisallowMultipleComponent;
 using GameObject                = UnityEngine.GameObject;
 using Mathf                     = UnityEngine.Mathf;
 using MonoBehaviour             = UnityEngine.MonoBehaviour;
+using Quaternion                = UnityEngine.Quaternion;
 using Range                     = UnityEngine.RangeAttribute;
 using SerializeField            = UnityEngine.SerializeField;
 using Time                      = UnityEngine.Time;
@@ -49,19 +50,11 @@ namespace PSI
         public Vector3 centreOfMass = Vector3.zero;
 
         /// <summary>
-        /// A cached copy of mass after being inverted.
+        /// Gets or sets the linear momentum of the object, represented in kilogram-metres/second.
         /// </summary>
-        float m_inverseMass = 1f;
-
-        /// <summary>
-        /// How fast the object is travelling in each axis (metres/s).
-        /// </summary>
-        Vector3 m_velocity = Vector3.zero;
-
-        /// <summary>
-        /// Linear momentum represented in kilogram-metres/second.
-        /// </summary>
-        Vector3 m_momentum = Vector3.zero;
+        /// <value>The desired momentum of the object.</value>
+        [System.NonSerialized]
+        public Vector3 momentum = Vector3.zero;
 
         /// <summary>
         /// Traditional force which should be applied taking into account the mass of an object.
@@ -73,6 +66,15 @@ namespace PSI
         /// </summary>
         Vector3 m_acceleration = Vector3.zero;
 
+        Vector3 m_impulse = Vector3.zero;
+        public Vector3 accumulatedImpulse { get {return m_impulse; }}
+
+        /// <summary>
+        /// Gets or sets the angular momentum of the object. This controls the rate at which the object is rotating.
+        /// </summary>
+        /// <value>The desired angular momentum of the object..</value>
+        public Vector3 angularMomentum { get; set; }
+
         /// <summary>
         /// The Physics system the object is currently registered with.
         /// </summary>
@@ -81,6 +83,26 @@ namespace PSI
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets the position of the Rigidbody.
+        /// </summary>
+        /// <value>The desired position of the object in the scene.</value>
+        public Vector3 position
+        {
+            get { return transform.position; }
+            set { transform.position = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the rotation of the Rigidbody.
+        /// </summary>
+        /// <value>The desired rotation of the object in the scene.</value>
+        public Quaternion rotation
+        {
+            get { return transform.rotation; }
+            set { transform.rotation = value; }
+        }
 
         /// <summary>
         /// Gets or sets the physical mass of the object, represented in kilograms.
@@ -95,7 +117,6 @@ namespace PSI
                 Assert.IsTrue (mass > 0f, "Rigidbody mass must be larger than zero.");
 
                 m_mass = Mathf.Max (0.00001f, value);
-                m_inverseMass = 1f / m_mass;
             }
         }
 
@@ -132,51 +153,14 @@ namespace PSI
         }
 
         /// <summary>
-        /// Gets the inverse of the objects mass.
-        /// </summary>
-        /// <value>The mass of the object after being inverted.</value>
-        public float inverseMass
-        {
-            get { return m_inverseMass; }
-        }
-
-        /// <summary>
         /// Gets or sets the velocity at which the object is moving in metres/s. Setting this will recalcuate the 
         /// momentum.
         /// </summary>
         /// <value>The desired velocity of the object.</value>
         public Vector3 velocity
         {
-            get { return m_velocity; }
-            set
-            {
-                // We must recalcuate the momentum if the velocity is modified.
-                m_velocity = value;
-                m_momentum = velocity * mass;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the linear momentum of the object, represented in kilogram-metres/second. Setting this will
-        /// recalculate the momentum.
-        /// </summary>
-        /// <value>The desired momentum of the object.</value>
-        public Vector3 momentum
-        {
-            get { return m_momentum; }
-            set
-            {
-                m_momentum = value;
-                m_velocity = m_momentum / mass;
-            }
-        }
-
-        /// <summary>
-        /// Gets the force of the movement force of the objects momentum.
-        /// </summary>
-        public Vector3 momentumForce
-        {
-            get { return m_momentum / Time.deltaTime; }
+            get { return momentum / mass; }
+            set { momentum = value * mass; }
         }
 
         /// <summary>
@@ -253,7 +237,8 @@ namespace PSI
         /// <param name="force">The desired force to be applied.</param>
         public void AddImpulse (Vector3 impulse)
         {
-            m_force += impulse / Time.fixedDeltaTime;
+            //m_force += impulse / Time.fixedDeltaTime;
+            m_impulse += impulse / Time.fixedDeltaTime;
         }
 
         /// <summary>
@@ -263,6 +248,7 @@ namespace PSI
         {
             m_force = Vector3.zero;
             m_acceleration = Vector3.zero;
+            m_impulse = Vector3.zero;
         }
 
         #endregion
