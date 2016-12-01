@@ -24,7 +24,7 @@ public class ImpulseTest : MonoBehaviour
 
         if (m_psi.enabled)
         {
-            m_psi.AddImpulse (transform.forward * m_impulse);
+            m_psi.AddLinearImpulse (transform.forward * m_impulse);
         }
         else
         {
@@ -42,7 +42,7 @@ public class ImpulseTest : MonoBehaviour
 
         else if (m_printResult)
         {
-            Debug.Log ("Time taken: " + m_time);
+            Debug.Log ("Time taken: " + m_time + ", height: " + transform.position.y);
             m_printResult = false;
         }
     }

@@ -49,16 +49,16 @@ namespace PSI
                 // Add gravity if necessary
                 if (rigidbody.simulateGravity)
                 {
-                    rigidbody.AddAcceleration (gravity);
+                    rigidbody.AddLinearAcceleration (gravity);
                 }
 
                 // Use RK4 to simulate the change in momentum and position of the object.
-                RK4Integration.LinearMotion.Integrate (rigidbody, deltaTime);
+                RK4Integrator.Integrate (rigidbody, deltaTime);
 
                 // Ensure we reset the forces correctly.
                 rigidbody.ResetAccumulatedForces();
-                Assert.IsTrue (rigidbody.accumulatedForce == Vector3.zero);
-                Assert.IsTrue (rigidbody.accumulatedAcceleration == Vector3.zero);
+                Assert.IsTrue (rigidbody.linearForce == Vector3.zero);
+                Assert.IsTrue (rigidbody.linearAcceleration == Vector3.zero);
             }
         }
 

@@ -32,16 +32,17 @@ public class ForceTest : MonoBehaviour
 
             if (m_psi.enabled)
             {
-                m_psi.AddForce (transform.forward * m_force);
+                m_psi.AddLinearForce (transform.forward * m_force);
+                m_psi.AddAngularTorque (transform.forward * m_force);
             }
             else
             {
-                m_unity.AddForce (transform.forward * m_force);
+                m_unity.AddForce (transform.up * m_force);
             }
         }
         else if (m_printResult)
         {
-            Debug.Log ("Time taken: " + m_time);
+            Debug.Log ("Time taken: " + m_time + ", height: " + transform.position.y);
             m_printResult = false;
         }
     }

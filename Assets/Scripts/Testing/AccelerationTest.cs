@@ -32,7 +32,7 @@ public class AccelerationTest : MonoBehaviour
 
             if (m_psi.enabled)
             {
-                m_psi.AddAcceleration (transform.forward * m_acceleration);
+                m_psi.AddLinearAcceleration (transform.forward * m_acceleration);
             }
             else
             {
@@ -41,7 +41,7 @@ public class AccelerationTest : MonoBehaviour
         }
         else if (m_printResult)
         {
-            Debug.Log ("Time taken: " + m_time);
+            Debug.Log ("Time taken: " + m_time + ", height: " + transform.position.y);
             m_printResult = false;
         }
     }
