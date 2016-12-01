@@ -37,7 +37,7 @@ public class ForceTest : MonoBehaviour
             }
             else
             {
-                m_unity.AddForce (transform.up * m_force);
+                m_unity.AddForce (transform.forward * m_force);
             }
         }
         else if (m_printResult)

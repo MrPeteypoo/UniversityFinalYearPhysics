@@ -17,21 +17,6 @@ namespace PSI
         /// <param name="deltaTime">The length of the normal time-step.</param>
         public static void Integrate (Rigidbody rigidbody, float deltaTime)
         {
-            /*// Force is assumed to be added every frame.
-            var force = rigidbody.accumulatedForce;
-
-            // Acceleration is also assumed to be added every frame. Acceleration is independant of mass so we
-            // must multiply it by the objects mass.
-            var acceleration = rigidbody.accumulatedAcceleration * rigidbody.mass;
-
-            // Calculate resisted motion according to Mathematics for 3D Game Rogramming and Computer Graphics.
-            // Formula: mg - mkx'. "mg" is contained within acceleration, momentum gives us "mx'" and "k" is
-            // the rigidbody drag co-efficient.
-            var resistance = rigidbody.momentum * rigidbody.drag;
-
-            rigidbody.momentum += (force + acceleration + rigidbody.accumulatedImpulse - resistance) * deltaTime;
-            rigidbody.position += rigidbody.velocity * deltaTime;*/
-
             // Cache anything calculated multiple times.
             var halfDelta = deltaTime / 2f;
             var sixth = 1f / 6f;
@@ -157,7 +142,7 @@ namespace PSI
             /// </summary>
             /// <returns>The total torque to be applied to the object.</returns>
             /// <param name="rigidbody">The Rigidbody containing accumulated rotational forces.</param>
-            /// <param name="angularMomentum">The angular momentum of the object at the current time-step,</param>
+            /// <param name="angularMomentum">The angular momentum of the object at the current time-step.</param>
             private static Vector3 CalculateTorque (Rigidbody rigidbody, Vector3 angularMomentum)
             {
                 // Torque is assumed to be added every frame.
