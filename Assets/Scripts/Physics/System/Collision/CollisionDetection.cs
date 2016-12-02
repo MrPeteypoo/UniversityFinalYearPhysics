@@ -88,7 +88,7 @@ namespace PSI
 
         #endregion
 
-        #region Collision
+        #region Collision management
 
         /// <summary>
         /// Performs a collision detection pass of registered objects. This will test every dynamic object against 
@@ -102,7 +102,15 @@ namespace PSI
 
         private void CheckDynamicObjects()
         {
-            CheckCollisions (m_dynamic.spheres);
+            // Sphere
+            for (int i = 0; i < m_dynamic.spheres.Count; ++i)
+            {
+                // Sphere
+                for (int j = i+1; j < m_dynamic.spheres.Count; ++j)
+                {
+                    
+                }
+            }
             //CheckCollisions (m_dynamic.spheres, m_dynamic.boxes);
         }
 
@@ -111,10 +119,10 @@ namespace PSI
             //CheckCollisions (m_dynamic.spheres, m_static.spheres);
         }
 
-        private void CheckCollisions<T> (MappedPopList<T> colliders)
+        /*private void CheckCollisions (MappedPopList<T> colliders)
         {
             //CheckCollision (colliders[0]);
-        }
+        }*/
 
         #endregion
     }

@@ -53,7 +53,7 @@ namespace PSI
         /// <summary>
         /// Gets the squared radius of the sphere.
         /// </summary>
-        public float radiusSquared
+        public float sqrRadius
         {
             get { return m_radius * m_radius; }
         }
@@ -109,7 +109,7 @@ namespace PSI
             {
                 // Spherical moments of inertia: V(2/5mR^2, 2/5mR^2, 2/5mR^2).
                 var mass = m_attachedRigidbody.mass;
-                var momentOfInertia = 2f / 5f * mass * radius;
+                var momentOfInertia = 2f / 5f * mass * sqrRadius;
 
                 var inertiaTensor = new Vector3 (momentOfInertia, momentOfInertia, momentOfInertia);
                 m_attachedRigidbody.inertiaTensor = inertiaTensor;

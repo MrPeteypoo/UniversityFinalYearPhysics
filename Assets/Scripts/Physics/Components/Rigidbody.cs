@@ -339,7 +339,7 @@ namespace PSI
                 var radius = worldScale.x + worldScale.y + worldScale.z / 3f;
 
                 // Spherical moments of inertia: V(2/5mR^2, 2/5mR^2, 2/5mR^2).
-                var momentOfInertia = 2f / 5f * mass * radius;
+                var momentOfInertia = 2f / 5f * mass * (radius * radius);
                 inertiaTensor = new Vector3 (momentOfInertia, momentOfInertia, momentOfInertia);
             }
         }
