@@ -8,6 +8,7 @@ using Quaternion                = UnityEngine.Quaternion;
 using Range                     = UnityEngine.RangeAttribute;
 using SerializeField            = UnityEngine.SerializeField;
 using Time                      = UnityEngine.Time;
+using Tooltip                   = UnityEngine.TooltipAttribute;
 using Vector3                   = UnityEngine.Vector3;
 
 
@@ -26,21 +27,16 @@ namespace PSI
         /// </summary>
         Physics m_system = null;
 
-        /// <summary>
-        /// The physical mass of the object, represented in kilograms-metres/second.
-        /// </summary>
-        [SerializeField, Range (0.00001f, float.PositiveInfinity)]
+        [SerializeField, Tooltip ("The physical mass of the object, represented in kilograms.")]
         float m_mass = 1f;
 
-        /// <summary>
-        /// The energy threshold at which the object should come to a resting point.
-        /// </summary>
-        [SerializeField, Range (0f, float.PositiveInfinity)]
+        [SerializeField, Tooltip ("The energy threshold at which the object should come to a resting point.")]
         float m_sleepThreshold = 0.005f;
 
         /// <summary>
         /// Determines whether gravity should be applied.
         /// </summary>
+        [Tooltip ("Determines whether gravity should be applied.")]
         public bool simulateGravity = true;
 
         /// <summary>
@@ -54,8 +50,7 @@ namespace PSI
             {
                 // Ensure we don't have zero mass.
                 Assert.IsTrue (mass > 0f, "Rigidbody mass must be larger than zero.");
-
-                m_mass = Mathf.Max (0.00001f, value);
+                m_mass = Mathf.Max (0.0001f, value);
             }
         }
 
@@ -70,7 +65,6 @@ namespace PSI
             {
                 // Must be a positive value.
                 Assert.IsTrue (m_sleepThreshold >= 0f, "Rigibody sleep threshold must be a positive value.");
-
                 m_sleepThreshold = Mathf.Max (0f, value);
             }
         }
@@ -79,10 +73,7 @@ namespace PSI
 
         #region Linear motion
 
-        /// <summary>
-        /// The uniform drag co-efficient of the object. The higher the value the more damping will be applied.
-        /// </summary>
-        [SerializeField, Range (0f, float.PositiveInfinity)]
+        [SerializeField, Tooltip ("A uniform drag co-efficient, determines how much damping will be applied.")]
         float m_drag = 0f;
 
         /// <summary>
@@ -157,16 +148,13 @@ namespace PSI
 
         #region Rotational motion
 
-        /// <summary>
-        /// The uniform angular drag co-efficient. The higher the value the more damping will be applied.
-        /// </summary>
-        /// <value>This must be a positive value.</value>
-        [SerializeField, Range (0f, float.PositiveInfinity)]
+        [SerializeField, Tooltip ("A uniform angular drag co-efficient, determines how much damping will be applied.")]
         float m_angularDrag = 0.005f;
 
         /// <summary>
         /// An offset representing the centre of mass. This effects how angular velocity is applied.
         /// </summary>
+        [Tooltip ("An offset representing the centre of mass. This effects how angular velocity is applied.")]
         public Vector3 centreOfMass = Vector3.zero;
 
         /// <summary>
@@ -256,6 +244,18 @@ namespace PSI
         #endregion
 
         #region Component state management
+
+        /// <summary>
+        /// Ensures member data which needs to be clamped is successfully clamped.
+        /// </summary>
+        void OnValidate()
+        {
+            // Allow the properties to set limits.
+            mass            = m_mass;
+            sleepThreshold  = m_sleepThreshold;
+            drag            = m_drag;
+            angularDrag     = m_angularDrag;
+        }
 
         /// <summary>
         /// Calculates the inertia tensor and centre of mass of the object. If a Rigidbody doesn't have any colliders
