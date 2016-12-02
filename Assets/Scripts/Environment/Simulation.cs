@@ -7,7 +7,8 @@ using UnityEngine;
 /// maintains the flow of the white box testing ground for the Physics system and controls when physics updates
 /// are performed.
 /// </summary>
-public class Simulation : MonoBehaviour
+[RequireComponent (typeof (PSI.PhysicsImplementation)), RequireComponent (typeof (PSI.PhysicsMaterials))]
+public sealed class Simulation : MonoBehaviour
 {
     #region Members
 
