@@ -23,11 +23,6 @@ namespace PSI
     {
         #region General data
 
-        /// <summary>
-        /// The Physics system the object is currently registered with.
-        /// </summary>
-        Physics m_system = null;
-
         [SerializeField, Tooltip ("The physical mass of the object, represented in kilograms.")]
         float m_mass = 1f;
 
@@ -41,7 +36,8 @@ namespace PSI
         public bool simulateGravity = true;
 
         /// <summary>
-        /// Gets or sets the physical mass of the object, represented in kilograms-metres/second.
+        /// Gets or sets the physical mass of the object, represented in kilograms-metres/second. Setting this will not
+        /// reset the current inertia tensor value.
         /// </summary>
         /// <value>Must be larger than zero.</value>
         public float mass
@@ -244,6 +240,20 @@ namespace PSI
 
         #endregion
 
+        #region System data
+
+        /// <summary>
+        /// The Physics system the object is currently registered with.
+        /// </summary>
+        Physics m_system = null;
+
+        /// <summary>
+        /// Contains every Collider attached to the Rigidbody.
+        /// </summary>
+        MappedPopList<Collider> m_colliders = new MappedPopList<Collider> (4, 4);
+
+        #endregion
+
         #region Component state management
 
         /// <summary>
@@ -264,13 +274,7 @@ namespace PSI
         /// </summary>
         void Awake()
         {
-            // We need use scale to approximate a radius, averaging will be close enough if we have no colliders.
-            var worldScale = transform.lossyScale;
-            var radius = worldScale.x + worldScale.y + worldScale.z / 3f;
-
-            // Spherical moments of inertia: V(2/5mR^2, 2/5mR^2, 2/5mR^2).
-            var momentOfInertia = 2f / 5f * mass * radius;
-            inertiaTensor = new Vector3 (momentOfInertia, momentOfInertia, momentOfInertia);
+            ResetInertiaTensor();
         }
 
         /// <summary>
@@ -293,6 +297,50 @@ namespace PSI
             if (m_system && this)
             {
                 m_system.Deregister (this);
+            }
+        }
+
+        /// <summary>
+        /// Attaches a Collider to the Rigidbody, this causes a reset of the inertia tensor.
+        /// </summary>
+        /// <param name="collider">The collider to be attached.</param>
+        public void Attach (Collider collider)
+        {
+            m_colliders.Add (collider);
+            ResetInertiaTensor();
+        }
+
+        /// <summary>
+        /// Detaches a Collider from the Rigidbody, this causes a reset of the inertia tensor.
+        /// </summary>
+        /// <param name="collider">The collider to be detached.</param>
+        public void Detach (Collider collider)
+        {
+            m_colliders.Remove (collider);
+            ResetInertiaTensor();
+        }
+
+        /// <summary>
+        /// Computes a new value for the inertia tensor based on the current mass and attached Collider objects.
+        /// </summary>
+        public void ResetInertiaTensor()
+        {
+            // Just use the moments of inertia of the first collider until compound colliders are supported.
+            if (m_colliders.Count > 0)
+            {
+                m_colliders[0].UpdateRigidbodyInertiaTensor();
+            }
+
+            // Rigidbodies should use spherical moments of inertia unless they contain colliders.
+            else
+            {
+                // We need use scale to approximate a radius, averaging will be close enough if we have no colliders.
+                var worldScale = transform.lossyScale;
+                var radius = worldScale.x + worldScale.y + worldScale.z / 3f;
+
+                // Spherical moments of inertia: V(2/5mR^2, 2/5mR^2, 2/5mR^2).
+                var momentOfInertia = 2f / 5f * mass * radius;
+                inertiaTensor = new Vector3 (momentOfInertia, momentOfInertia, momentOfInertia);
             }
         }
 

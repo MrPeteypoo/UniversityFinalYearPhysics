@@ -17,6 +17,11 @@ namespace PSI
         /// </summary>
         MappedPopList<Rigidbody> m_rigidbodies = new MappedPopList<Rigidbody> (100);
 
+        /// <summary>
+        /// Manages collision detection within the scene.
+        /// </summary>
+        CollisionDetection m_collision = new CollisionDetection();
+
         #endregion
 
         #region Execution
@@ -68,6 +73,7 @@ namespace PSI
         /// <param name="deltaTime">How many second have passed since the last frame.</param>
         public sealed override void PostUpdate (float deltaTime)
         {
+            // TODO: Trigger collision callbacks.
         }
 
         #endregion
@@ -92,6 +98,24 @@ namespace PSI
         public override void Deregister (Rigidbody rigidbody)
         {
             m_rigidbodies.SwapAndPop (rigidbody);
+        }
+
+        /// <summary>
+        /// Register the given Collider with the system, allowing it to be used in collision detection.
+        /// </summary>
+        /// <param name="collider">The collider to be registered.</param>
+        public override sealed void Register (Collider collider)
+        {
+            m_collision.Register (collider);
+        }
+
+        /// <summary>
+        /// Unregisters the given Collider from the system, this stops it being used during collision detection.
+        /// </summary>
+        /// <param name="collider">The collider to be unregistered.</param>
+        public override sealed void Deregister (Collider collider)
+        {
+            m_collision.Deregister (collider);
         }
 
         #endregion

@@ -36,6 +36,18 @@ namespace PSI
         /// <param name="rigidbody">Rigidbody.</param>
         public abstract void Deregister (Rigidbody rigidbody);
 
+        /// <summary>
+        /// Register the given Collider with the system, allowing it to be used in collision detection.
+        /// </summary>
+        /// <param name="collider">The collider to be registered.</param>
+        public abstract void Register (Collider collider);
+
+        /// <summary>
+        /// Unregisters the given Collider from the system, this stops it being used during collision detection.
+        /// </summary>
+        /// <param name="collider">The collider to be unregistered.</param>
+        public abstract void Deregister (Collider collider);
+
         #endregion
 
         #region Static functionality

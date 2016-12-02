@@ -17,6 +17,16 @@ namespace PSI
     [Serializable, AddComponentMenu ("PSI/Collider")]
     public abstract class Collider : MonoBehaviour
     {
+        /// <summary>
+        /// An enum representing each derived class from Collider. This is horrible and should be burned but the lack
+        /// of metaprogramming features in C# is killing me.
+        /// </summary>
+        public enum Derived
+        {
+            Invalid,
+            Sphere
+        }
+
         #region Members
 
         /// <summary>
@@ -33,6 +43,11 @@ namespace PSI
         /// The Rigidbody the Collider is attached to, any collisions will effect this object.
         /// </summary>
         protected Rigidbody m_attachedRigidbody = null;
+
+        /// <summary>
+        /// The physics system that the Collider is registered with.
+        /// </summary>
+        protected Physics m_physics = null;
 
         #endregion
 
@@ -53,12 +68,26 @@ namespace PSI
         #region Functionality
 
         /// <summary>
-        /// Attempts to obtain the PhysicsMaterial for the Collider and attach itself to a Rigidbody.
+        /// Updates the inertia tensor value on the attached Rigidbody.
         /// </summary>
-        virtual protected void Start()
+        public abstract void UpdateRigidbodyInertiaTensor();
+
+        /// <summary>
+        /// Gets the enum representing the derived type of the object.
+        /// </summary>
+        public virtual Derived GetDerivedType() { return Derived.Invalid; }
+
+        /// <summary>
+        /// Attempts to obtain the PhysicsMaterial for the Collider, attach itself to a Rigidbody and find a Physics
+        /// system that can be registered with.
+        /// </summary>
+        virtual protected void OnEnable()
         {
             m_attachedRigidbody = FindAttachableRigidbody();
             material            = material ?? ObtainMaterial();
+            m_physics           = Physics.FindSystem();
+
+            Assert.IsNotNull (m_physics, "Collider couldn't find a Physics system to register with.");
         }
 
         /// <summary>
