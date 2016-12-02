@@ -6,6 +6,7 @@ using Mathf                     = UnityEngine.Mathf;
 using MonoBehaviour             = UnityEngine.MonoBehaviour;
 using Quaternion                = UnityEngine.Quaternion;
 using Range                     = UnityEngine.RangeAttribute;
+using Serializable              = System.SerializableAttribute;
 using SerializeField            = UnityEngine.SerializeField;
 using Time                      = UnityEngine.Time;
 using Tooltip                   = UnityEngine.TooltipAttribute;
@@ -17,7 +18,7 @@ namespace PSI
     /// <summary>
     /// A component which dictates how the GameObject should be handled by the Physics system.
     /// </summary>
-    [System.Serializable, DisallowMultipleComponent, AddComponentMenu ("PSI/Rigidbody")]
+    [Serializable, DisallowMultipleComponent, AddComponentMenu ("PSI/Rigidbody")]
     public sealed class Rigidbody : MonoBehaviour
     {
         #region General data
@@ -49,7 +50,7 @@ namespace PSI
             set
             {
                 // Ensure we don't have zero mass.
-                Assert.IsTrue (mass > 0f, "Rigidbody mass must be larger than zero.");
+                Assert.IsTrue (value > 0f, "Rigidbody mass must be larger than zero.");
                 m_mass = Mathf.Max (0.0001f, value);
             }
         }
@@ -64,7 +65,7 @@ namespace PSI
             set
             {
                 // Must be a positive value.
-                Assert.IsTrue (m_sleepThreshold >= 0f, "Rigibody sleep threshold must be a positive value.");
+                Assert.IsTrue (value >= 0f, "Rigibody sleep threshold must be a positive value.");
                 m_sleepThreshold = Mathf.Max (0f, value);
             }
         }
@@ -112,7 +113,7 @@ namespace PSI
             set
             {
                 // Must be a positive value.
-                Assert.IsTrue (m_drag >= 0f, "Rigidbody drag must be a positive value.");
+                Assert.IsTrue (value >= 0f, "Rigidbody drag must be a positive value.");
                 m_drag = Mathf.Max (0f, value);
             }
         }
@@ -201,7 +202,7 @@ namespace PSI
             set
             {
                 // Must be a positive value.
-                Assert.IsTrue (m_angularDrag >= 0f, "Rigidbody angular drag must be a positive value.");
+                Assert.IsTrue (value >= 0f, "Rigidbody angular drag must be a positive value.");
                 m_angularDrag = Mathf.Max (0f, value);
             }
         }
