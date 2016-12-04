@@ -97,18 +97,20 @@ namespace PSI
                     Collision.SphereOnSphere (m_dynamic.spheres[i], m_dynamic.spheres[j]);
                 }
             }
-            //CheckCollisions (m_dynamic.spheres, m_dynamic.boxes);
         }
 
         private void CheckDynamicAgainstStatic()
         {
-            //CheckCollisions (m_dynamic.spheres, m_static.spheres);
+            // Sphere.
+            for (int i = 0; i < m_dynamic.spheres.Count; ++i)
+            {
+                // On sphere.
+                for (int j = 0; j < m_static.spheres.Count; ++j)
+                {
+                    Collision.SphereOnSphere (m_dynamic.spheres[i], m_static.spheres[j]);
+                }
+            }
         }
-
-        /*private void CheckCollisions (MappedPopList<T> colliders)
-        {
-            //CheckCollision (colliders[0]);
-        }*/
 
         #endregion
     }
