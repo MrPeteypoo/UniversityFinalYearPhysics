@@ -26,6 +26,7 @@ GameObject:
   - 114: {fileID: 114000010939794774}
   - 114: {fileID: 114000013513139820}
   - 114: {fileID: 114000010478858954}
+  - 114: {fileID: 114000012159448684}
   m_Layer: 0
   m_Name: ForceTesting
   m_TagString: Untagged
@@ -39,10 +40,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013512936556}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.538, y: 0.508, z: -5.258}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 1.71, y: 0.508, z: 1.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -108,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eabf958e99c4844daade1b82ba858ee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_impulse: 5
+  m_impulse: 20
   m_distance: 10
 --- !u!114 &114000010939794774
 MonoBehaviour:
@@ -129,16 +130,31 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013512936556}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 185b9807e0e814915a542c11b6e26b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_mass: 2
-  m_drag: 0
+  m_mass: 5
   m_sleepThreshold: 0.001
   simulateGravity: 0
+  m_drag: 0
+  m_angularDrag: 2
   centreOfMass: {x: 0, y: 0, z: 0}
+--- !u!114 &114000012159448684
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013512936556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6032aac2256c84715a25b136c78f6e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_materialID: Test
+  m_centre: {x: 0, y: 0, z: 0}
+  m_radius: 0.5
 --- !u!114 &114000013513139820
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -150,5 +166,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1901d9ab5e444c808125dbc6822d6ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_acceleration: 0.5
+  m_acceleration: 5
   m_distance: 10
