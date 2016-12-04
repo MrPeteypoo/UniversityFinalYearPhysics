@@ -13,8 +13,23 @@ namespace PSI
     /// A representation of the physical properties of a material. Physics materials control the restitution and 
     /// friction attributes of collision.
     /// </summary>
-    public sealed class PhysicsMaterial : Object
+    [System.Serializable]
+    public sealed class PhysicsMaterial
     {
+        #region Nested structures
+
+        /// <summary>
+        /// The result of each value after two surfaces have been combined.
+        /// </summary>
+        public struct Result
+        {
+            public float kineticFriction;
+            public float staticFriction;
+            public float restitution;
+        }
+
+        #endregion
+
         #region Members
 
         [SerializeField, Tooltip ("Determines the strength of friction when objects are moving against the surface.")]
@@ -84,6 +99,11 @@ namespace PSI
             }
         }
 
+        public static implicit operator bool (PhysicsMaterial material)
+        {
+            return material != null;
+        }
+
         #endregion
 
         #region Validation
@@ -149,6 +169,52 @@ namespace PSI
                     return Mathf.Min (lhs, rhs);
                 default:
                     throw new System.NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Combines the values of two surfaces together, outputting the results to Result a and b.
+        /// </summary>
+        /// <param name="lhs">A material to be combined.</param>
+        /// <param name="rhs">A material to be combined./</param>
+        /// <param name="a">The resulting surface properties for "lhs".</param>
+        /// <param name="b">The resulting surface properties for "rhs".</param>
+        public static void Combine (PhysicsMaterial lhs, PhysicsMaterial rhs, out Result a, out Result b)
+        {
+            if (lhs)
+            {
+                a.kineticFriction   = lhs.CalculateKineticFriction (rhs);
+                a.staticFriction    = lhs.CalculateStaticFriction (rhs);
+                a.restitution       = lhs.CalculateRestitution (rhs);
+
+                if (rhs)
+                {
+                    b.kineticFriction   = rhs.CalculateKineticFriction (lhs);
+                    b.staticFriction    = rhs.CalculateStaticFriction (lhs);
+                    b.restitution       = rhs.CalculateRestitution (lhs);
+                }
+
+                // Use the surface properties of "a" if "rhs" is null.
+                else
+                {
+                    b = a;
+                }
+            }
+
+            // Swap the parameters if "lhs" is null and "rhs" isn't.
+            else if (rhs)
+            {
+                Combine (rhs, lhs, out b, out a);
+            }
+
+            else
+            {
+                // Set restitution to 1.0 by default.
+                a = new Result();
+                a.restitution = 1f;
+
+                // Have "b" copy "a".
+                b = a;
             }
         }
 
