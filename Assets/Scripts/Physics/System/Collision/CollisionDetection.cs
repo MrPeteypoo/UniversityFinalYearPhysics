@@ -10,12 +10,12 @@ namespace PSI
         /// <summary>
         /// Contains all static Colliders in the engine.
         /// </summary>
-        Colliders m_static = new Colliders();
+        Colliders m_static = new Colliders (100);
 
         /// <summary>
         /// Contains all dynamic Colliders in the engine.
         /// </summary>
-        Colliders m_dynamic = new Colliders();
+        Colliders m_dynamic = new Colliders (100);
 
         #endregion
 
@@ -28,7 +28,7 @@ namespace PSI
         /// <typeparam name="T">The actual derived type of the Collider.</typeparam>
         public void Register (Collider collider)
         {
-            if (IsStatic (collider))
+            if (collider.isStatic)
             {
                 m_static.Add (collider);
             }
@@ -46,7 +46,7 @@ namespace PSI
         public void Deregister (Collider collider)
         {
             // It's possible for objects to have their static status changed after being added.
-            if (IsStatic (collider))
+            if (collider.isStatic)
             {
                 RemoveCollider (collider, m_static, m_dynamic);
             }
@@ -55,20 +55,6 @@ namespace PSI
             {
                 RemoveCollider (collider, m_dynamic, m_static);
             }
-        }
-
-        /// <summary>
-        /// Determines whether the given Collider is static.
-        /// </summary>
-        private bool IsStatic (Collider collider)
-        {
-            // Ensure both the collider and rigidbody are marked as static before classing it as static.
-            if (collider.attachedRigidbody)
-            {
-                return collider.gameObject.isStatic && collider.attachedRigidbody.gameObject.isStatic;
-            }
-
-            return collider.gameObject.isStatic;
         }
 
         /// <summary>
@@ -102,13 +88,13 @@ namespace PSI
 
         private void CheckDynamicObjects()
         {
-            // Sphere
+            // Sphere.
             for (int i = 0; i < m_dynamic.spheres.Count; ++i)
             {
-                // Sphere
+                // On sphere.
                 for (int j = i+1; j < m_dynamic.spheres.Count; ++j)
                 {
-                    
+                    Collision.SphereOnSphere (m_dynamic.spheres[i], m_dynamic.spheres[j]);
                 }
             }
             //CheckCollisions (m_dynamic.spheres, m_dynamic.boxes);

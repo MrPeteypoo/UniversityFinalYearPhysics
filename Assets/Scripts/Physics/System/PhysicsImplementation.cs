@@ -1,5 +1,6 @@
 ﻿using AddComponentMenu  = UnityEngine.AddComponentMenu;
 using Assert            = UnityEngine.Assertions.Assert;
+using ForceMode         = UnityEngine.ForceMode;
 using GameObject        = UnityEngine.GameObject;
 using MonoBehaviour     = UnityEngine.MonoBehaviour;
 using Vector3           = UnityEngine.Vector3;
@@ -7,7 +8,7 @@ using Vector3           = UnityEngine.Vector3;
 
 namespace PSI
 {
-    [AddComponentMenu ("PSI/PhysicsImplementation")]
+    [AddComponentMenu ("PSI/Physics Implementation")]
     public sealed class PhysicsImplementation : PhysicsSystem
     {
         #region Internal data
@@ -41,6 +42,7 @@ namespace PSI
         /// <param name="deltaTime">How many seconds have passed since the last frame.</param>
         public sealed override void PreUpdate (float deltaTime)
         {
+            m_collision.Run();
         }
 
         /// <summary>
@@ -51,10 +53,10 @@ namespace PSI
         {
             foreach (var rigidbody in m_rigidbodies)
             {
-                // Add gravity if necessary
+                // Add gravity if necessary.
                 if (rigidbody.simulateGravity)
                 {
-                    rigidbody.AddLinearAcceleration (gravity);
+                    rigidbody.AddForce (gravity, ForceMode.Acceleration);
                 }
 
                 // Use RK4 to simulate the change in momentum and position of the object.
@@ -62,8 +64,6 @@ namespace PSI
 
                 // Ensure we reset the forces correctly.
                 rigidbody.ResetAccumulatedForces();
-                Assert.IsTrue (rigidbody.linearForce == Vector3.zero);
-                Assert.IsTrue (rigidbody.linearAcceleration == Vector3.zero);
             }
         }
 

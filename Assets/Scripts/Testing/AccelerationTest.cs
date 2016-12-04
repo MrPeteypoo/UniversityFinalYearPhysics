@@ -32,7 +32,7 @@ public class AccelerationTest : MonoBehaviour
 
             if (m_psi.enabled)
             {
-                m_psi.AddLinearAcceleration (transform.forward * m_acceleration);
+                m_psi.AddForce (transform.forward * m_acceleration, ForceMode.Acceleration);
             }
             else
             {

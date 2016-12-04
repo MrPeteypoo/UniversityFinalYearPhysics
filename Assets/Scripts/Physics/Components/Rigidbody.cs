@@ -1,6 +1,7 @@
 ﻿using AddComponentMenu          = UnityEngine.AddComponentMenu;
 using Assert                    = UnityEngine.Assertions.Assert;
 using DisallowMultipleComponent = UnityEngine.DisallowMultipleComponent;
+using ForceMode                 = UnityEngine.ForceMode;
 using GameObject                = UnityEngine.GameObject;
 using Mathf                     = UnityEngine.Mathf;
 using MonoBehaviour             = UnityEngine.MonoBehaviour;
@@ -308,6 +309,7 @@ namespace PSI
         {
             m_colliders.Add (collider);
             ResetInertiaTensor();
+            ResetCentreOfMass();
         }
 
         /// <summary>
@@ -344,68 +346,111 @@ namespace PSI
             }
         }
 
+        /// <summary>
+        /// Resets the centre of mass of the Rigidbody based on the currently attached Collider objects.
+        /// </summary>
+        public void ResetCentreOfMass()
+        {
+            // Simply average the position of each collider as a first time implementation.
+            centreOfMass = Vector3.zero;
+
+            foreach (var collider in m_colliders)
+            {
+                centreOfMass += collider.CalculateCentreOfMass();
+            }
+
+            if (m_colliders.Count > 0)
+            {
+                centreOfMass /= m_colliders.Count;
+            }
+        }
+
         #endregion
 
         #region Forces
 
         /// <summary>
-        /// Adds a continuous force to the object, this takes into account the objects mass and ideally should be
-        /// called each frame.
+        /// Adds a force to the object using the mode specified. Force and Impulse take the objects mass into account,
+        /// Acceleration and VelocityChange ignore mass and move every object at the same speed.
         /// </summary>
         /// <param name="force">The desired force to be applied.</param>
-        public void AddLinearForce (Vector3 force)
+        /// <param name="mode">Describes how the force should be applied.</param>
+        public void AddForce (Vector3 force, ForceMode mode = ForceMode.Force)
         {
-            m_linearForce += force;
+            switch (mode)
+            {
+                // Normal force.
+                case ForceMode.Force:
+                    m_linearForce += force;
+                    break;
+
+                // Mass-ignoring force.
+                case ForceMode.Acceleration:
+                    m_linearAcceleration += force;
+                    break;
+
+                // Force over a second applied in an instant.
+                case ForceMode.Impulse:
+                    m_linearForce += force / Time.fixedDeltaTime;
+                    break;
+
+                // Mass-ignoring force over a second applied in an instant.
+                case ForceMode.VelocityChange:
+                    m_linearAcceleration += force / Time.fixedDeltaTime;
+                    break;
+
+                default:
+                    throw new System.NotImplementedException();
+            }
         }
 
         /// <summary>
-        /// Adds a continuous acceleration to the object, this ignores the objects mass and ideally should be
-        /// called each frame.
-        /// </summary>
-        /// <param name="force">The desired force to be applied.</param>
-        public void AddLinearAcceleration (Vector3 acceleration)
-        {
-            m_linearAcceleration += acceleration;
-        }
-
-        /// <summary>
-        /// Adds an impulsive force which results in an immediate increase in velocity. This takes into account the
-        /// objects mass and shouldn't be called every frame.
-        /// </summary>
-        /// <param name="force">The desired force to be applied.</param>
-        public void AddLinearImpulse (Vector3 impulse)
-        {
-            m_linearForce += impulse / Time.fixedDeltaTime;
-            //m_impulse += impulse / Time.fixedDeltaTime;
-        }
-
-        /// <summary>
-        /// Adds a contiuous force to the rotation of the object. Ideally it should be called each frame to increase
-        /// spinning speed.
+        /// Adds a torque to the object using the mode specified. Force and Impulse take the objects mass into account,
+        /// Acceleration and VelocityChange ignore mass and move every object at the same speed.
         /// </summary>
         /// <param name="torque">The amount of torque to be applied.</param>
-        public void AddAngularTorque (Vector3 torque)
+        /// <param name="mode">Describes how the force should be applied.</param>
+        public void AddTorque (Vector3 torque, ForceMode mode = ForceMode.Force)
         {
-            m_angularTorque += torque;
+            switch (mode)
+            {
+                // Normal torque.
+                case ForceMode.Force:
+                    m_angularTorque += torque;
+                    break;
+
+                // Mass-ignoring torque.
+                case ForceMode.Acceleration:
+                    m_angularAcceleration += torque;
+                    break;
+
+                // Torque over a second applied in an instant.
+                case ForceMode.Impulse:
+                    m_angularTorque += torque / Time.fixedDeltaTime;
+                    break;
+
+                // Mass-ignoring torque over a second applied in an instant.
+                case ForceMode.VelocityChange:
+                    m_angularAcceleration += torque / Time.fixedDeltaTime;
+                    break;
+
+                default:
+                    throw new System.NotImplementedException();
+            }
         }
 
         /// <summary>
-        /// Adds a continuous acceleration to the rotation of the object. This will be independant of mass and should
-        /// be called each frame to increase spinning speed.
+        /// Adds force at a given point in space, this is the desired way of moving objects and causes both a linear
+        /// and angular reaction from the object.
         /// </summary>
-        /// <param name="acceleration">Acceleration.</param>
-        public void AddAngularAcceleration (Vector3 acceleration)
+        /// <param name="force">The amount of force to be applied.</param>
+        /// <param name="point">The point in world co-ordinates of the force.</param>
+        /// <param name="mode">How the force should be applied.</param>
+        public void AddForceAtPoint (Vector3 force, Vector3 point, ForceMode mode = ForceMode.Force)
         {
-            m_angularAcceleration += acceleration;
-        }
-
-        /// <summary>
-        /// Adds an impulsive force which will result in an immediate increase in rotational velocity.
-        /// </summary>
-        /// <param name="impulse">Impulse.</param>
-        public void AddAngularImpulse (Vector3 impulse)
-        {
-            m_angularTorque += impulse / Time.fixedDeltaTime;
+            var torque = Vector3.Cross (force, point - (position + centreOfMass));
+            AddForce (force, mode);
+            AddTorque (torque, mode);
         }
 
         /// <summary>

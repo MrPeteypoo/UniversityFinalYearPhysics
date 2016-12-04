@@ -32,8 +32,8 @@ public class ForceTest : MonoBehaviour
 
             if (m_psi.enabled)
             {
-                m_psi.AddLinearForce (transform.forward * m_force);
-                m_psi.AddAngularTorque (transform.forward * m_force);
+                m_psi.AddForce (transform.forward * m_force);
+                m_psi.AddTorque (transform.forward * m_force);
             }
             else
             {
