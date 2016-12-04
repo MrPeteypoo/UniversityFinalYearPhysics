@@ -448,7 +448,7 @@ namespace PSI
         /// <param name="mode">How the force should be applied.</param>
         public void AddForceAtPoint (Vector3 force, Vector3 point, ForceMode mode = ForceMode.Force)
         {
-            var torque = Vector3.Cross (force, point - (position + centreOfMass));
+            var torque = Vector3.Cross (force, (position + centreOfMass) - point);
             AddForce (force, mode);
             AddTorque (torque, mode);
         }

@@ -71,15 +71,9 @@ namespace PSI
             get 
             {
                 // Ensure both the collider and rigidbody are marked as static before classing it as static.
-                if (attachedRigidbody)
-                {
-                    return gameObject.isStatic && attachedRigidbody.gameObject.isStatic;
-                }
-
-                return gameObject.isStatic;
+                return !m_attachedRigidbody || !m_attachedRigidbody.enabled;
             }
         }
-
 
         #endregion
 

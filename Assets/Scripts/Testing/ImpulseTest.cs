@@ -24,8 +24,7 @@ public class ImpulseTest : MonoBehaviour
 
         if (m_psi.enabled)
         {
-            m_psi.AddForce (transform.forward * m_impulse, ForceMode.Impulse);
-            m_psi.AddTorque (transform.right * 30f, ForceMode.Impulse);
+            m_psi.AddForceAtPoint (transform.forward * m_impulse, transform.position - transform.forward + transform.up, ForceMode.Impulse);
         }
         else
         {
