@@ -20,7 +20,7 @@ namespace PSI
             /// </summary>
             /// <param name="capacity">How many objects should be preallocated in each collection.</param>
             /// <param name="capacityIncrement">How much to increment capacity for each collection.</param>
-            public Colliders (int capacity = 100, int capacityIncrement = 32)
+            public Colliders (int capacity, int capacityIncrement = 32)
             {
                 spheres = new MappedPopList<SphereCollider> (capacity, capacityIncrement);
             }
