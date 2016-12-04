@@ -1,7 +1,9 @@
-﻿using MonoBehaviour     = UnityEngine.MonoBehaviour;
+﻿using AddComponentMenu  = UnityEngine.AddComponentMenu;
+using MonoBehaviour     = UnityEngine.MonoBehaviour;
 using SerializeField    = UnityEngine.SerializeField;
 using Tooltip           = UnityEngine.TooltipAttribute;
 
+using System;
 using System.Collections.Generic;
 
 
@@ -10,12 +12,22 @@ namespace PSI
     /// <summary>
     /// Contains all PhysicsMaterial objects in the scene.
     /// </summary>
+    [AddComponentMenu ("PSI/Physics Materials")]
     public sealed class PhysicsMaterials : MonoBehaviour
     {
+        [Serializable]
+        private struct Pair
+        {
+            public string ID;
+            public PhysicsMaterial material;
+        }
+
+        [SerializeField, Tooltip ("All available materials in the scene.")]
+        List<Pair> m_editorValues = new List<Pair>();
+
         /// <summary>
         /// Maps material names to properties.
         /// </summary>
-        [SerializeField, Tooltip ("All available materials in the scene.")]
         Dictionary<string, PhysicsMaterial> m_materials = new Dictionary<string, PhysicsMaterial>();
 
         /// <summary>
@@ -25,6 +37,19 @@ namespace PSI
         public PhysicsMaterial this[string id]
         {
             get { return m_materials.ContainsKey (id) ? m_materials[id] : null; }
+        }
+
+        void Awake()
+        {
+            foreach (var pair in m_editorValues)
+            {
+                if (!m_materials.ContainsKey (pair.ID))
+                {
+                    m_materials[pair.ID] = pair.material;
+                }
+            }
+
+            m_editorValues.Clear();
         }
     }
 }
