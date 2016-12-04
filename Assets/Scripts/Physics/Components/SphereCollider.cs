@@ -1,4 +1,5 @@
-﻿using Assert            = UnityEngine.Assertions.Assert;
+﻿using AddComponentMenu  = UnityEngine.AddComponentMenu;
+using Assert            = UnityEngine.Assertions.Assert;
 using Mathf             = UnityEngine.Mathf;
 using SerializeField    = UnityEngine.SerializeField;
 using Tooltip           = UnityEngine.TooltipAttribute;
@@ -10,6 +11,7 @@ namespace PSI
     /// <summary>
     /// A simple spherical collider.
     /// </summary>
+    [AddComponentMenu ("PSI/Sphere Collider")]
     public sealed class SphereCollider : Collider
     {
         #region Members
@@ -17,8 +19,8 @@ namespace PSI
         /// <summary>
         /// The central offset of the sphere.
         /// </summary>
-        [Tooltip ("The central offset of the sphere.")]
-        public Vector3 centre = Vector3.zero;
+        [SerializeField, Tooltip ("The central offset of the sphere.")]
+        Vector3 m_centre = Vector3.zero;
 
         [SerializeField, Tooltip ("The length of the radius of the sphere.")]
         float m_radius = 5f;
@@ -32,7 +34,25 @@ namespace PSI
         /// </summary>
         public Vector3 position
         {
-            get { return transform.position + centre; }
+            get { return transform.position + m_centre; }
+        }
+
+        /// <summary>
+        /// Gets or sets the centre of the collider.
+        /// </summary>
+        /// <value>The desired centre.</value>
+        public Vector3 centre
+        {
+            get { return m_centre; }
+            set
+            {
+                m_centre = value;
+
+                if (m_attachedRigidbody)
+                {
+                    m_attachedRigidbody.ResetCentreOfMass();
+                }
+            }
         }
 
         /// <summary>
@@ -88,21 +108,25 @@ namespace PSI
             base.OnEnable();
 
             UpdateRigidbodyInertiaTensor();
-            m_physics.Register (this);//, Derived.Sphere);
+            m_physics.Register (this);
         }
 
         void OnDisable()
         {
             if (m_physics && this)
             {
-                m_physics.Deregister (this);//, Derived.Sphere);
+                m_physics.Deregister (this);
             }
         }
+
+        #endregion
+
+        #region Functionality
 
         /// <summary>
         /// Updates the intertia tensor of the attached Rigidbody.
         /// </summary>
-        public override void UpdateRigidbodyInertiaTensor ()
+        public override void UpdateRigidbodyInertiaTensor()
         {
             // Do nothing if we aren't attached to anything.
             if (m_attachedRigidbody)
@@ -114,6 +138,14 @@ namespace PSI
                 var inertiaTensor = new Vector3 (momentOfInertia, momentOfInertia, momentOfInertia);
                 m_attachedRigidbody.inertiaTensor = inertiaTensor;
             }
+        }
+
+        /// <summary>
+        /// Use the centre of the object as the centre of mass for the sphere.
+        /// </summary>
+        public override Vector3 CalculateCentreOfMass()
+        {
+            return centre;
         }
 
         #endregion

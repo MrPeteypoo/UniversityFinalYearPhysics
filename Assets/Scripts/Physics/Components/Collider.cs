@@ -63,6 +63,24 @@ namespace PSI
             get { return m_attachedRigidbody; }
         }
 
+        /// <summary>
+        /// Gets whether the given Collider is static.
+        /// </summary>
+        public bool isStatic
+        {
+            get 
+            {
+                // Ensure both the collider and rigidbody are marked as static before classing it as static.
+                if (attachedRigidbody)
+                {
+                    return gameObject.isStatic && attachedRigidbody.gameObject.isStatic;
+                }
+
+                return gameObject.isStatic;
+            }
+        }
+
+
         #endregion
 
         #region Functionality
@@ -71,6 +89,11 @@ namespace PSI
         /// Updates the inertia tensor value on the attached Rigidbody.
         /// </summary>
         public abstract void UpdateRigidbodyInertiaTensor();
+
+        /// <summary>
+        /// Calculates the centre of mass of the object.
+        /// </summary>
+        public abstract Vector3 CalculateCentreOfMass();
 
         /// <summary>
         /// Gets the enum representing the derived type of the object.
