@@ -149,6 +149,51 @@ namespace PSI
             return other ? Calculate (restitution, other.restitution, restituionCalculation) : restitution;
         }
 
+        public static float CalculateKineticFriction (PhysicsMaterial lhs, PhysicsMaterial rhs)
+        {
+            if (lhs)
+            {
+                return lhs.CalculateKineticFriction (rhs);
+            }
+
+            if (rhs)
+            {
+                return rhs.kineticFriction;
+            }
+
+            return 0f;
+        }
+
+        public static float CalculateStaticFriction (PhysicsMaterial lhs, PhysicsMaterial rhs)
+        {
+            if (lhs)
+            {
+                return lhs.CalculateStaticFriction (rhs);
+            }
+
+            if (rhs)
+            {
+                return rhs.staticFriction;
+            }
+
+            return 0f;
+        }
+
+        public static float CalculateRestitution (PhysicsMaterial lhs, PhysicsMaterial rhs)
+        {
+            if (lhs)
+            {
+                return lhs.CalculateRestitution (rhs);
+            }
+
+            if (rhs)
+            {
+                return rhs.restitution;
+            }
+
+            return 1f;
+        }
+
         /// <summary>
         /// Calculates a value from two given values based on the desired calculation method.
         /// </summary>
