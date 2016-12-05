@@ -147,8 +147,6 @@ namespace PSI
                     // Now do the same for angular momentum.
                     var angularDirection        = Vector3.Reflect (rigidbody.angularMomentum, direction).normalized;
                     rigidbody.angularMomentum   = -angularDirection * restitution;
-
-                    UnityEngine.Debug.Log ("Impulse.");
                 }
 
                 // Apply friction.
@@ -175,8 +173,6 @@ namespace PSI
 
                     CorrectLinearMotion (a.attachedRigidbody, b.attachedRigidbody, surfaceA, surfaceB, direction);
                     CorrectAngularMotion (a.attachedRigidbody, b.attachedRigidbody, surfaceA, surfaceB, direction);
-
-                    UnityEngine.Debug.Log ("Impulse.");
                 }
 
                 // Apply friction.

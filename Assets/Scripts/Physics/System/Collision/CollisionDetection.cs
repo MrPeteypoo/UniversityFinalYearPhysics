@@ -155,24 +155,6 @@ namespace PSI
                     }
                 }
             }
-
-            // Plane.
-            for (int i = 0; i < planes.Count; ++i)
-            {
-                var a = planes[i];
-
-                // On plane.
-                for (int j = i + 1; j < planes.Count; ++j)
-                {
-                    var b = planes[j]; 
-
-                    // Don't check collision of compound colliders.
-                    if (a.attachedRigidbody != b.attachedRigidbody)
-                    {
-                        m_collision.PlaneOnPlane (a, b);
-                    }
-                }
-            }
         }
 
         private void CheckDynamicAgainstStatic()
@@ -200,12 +182,6 @@ namespace PSI
                 foreach (var b in m_static.spheres)
                 {
                     m_collision.PlaneOnSphere (a, b);
-                }
-
-                // On plane.
-                foreach (var b in m_static.planes)
-                {
-                    m_collision.PlaneOnPlane (a, b);
                 }
             }
         }

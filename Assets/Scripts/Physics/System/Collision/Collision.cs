@@ -72,7 +72,7 @@ namespace PSI
                 var planeDot    = Vector3.Dot (plane, normal);
                 var distance    = sphereDot - planeDot;
 
-                if (Mathf.Abs (distance) < lhs.radius)
+                if (distance < lhs.radius)
                 {
                     // We've collided!
                     var intersection    = lhs.radius - distance;
