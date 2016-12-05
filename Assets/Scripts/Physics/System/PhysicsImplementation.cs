@@ -33,15 +33,17 @@ namespace PSI
         /// <returns>Whether the initialisation was successful.</returns>
         public sealed override bool Initialise()
         {
-            return true;
+            return m_collision.Initialise (gravity);
         }
 
         /// <summary>
-        /// Nothing atm.
+        /// Performs a collision detection pass.
         /// </summary>
         /// <param name="deltaTime">How many seconds have passed since the last frame.</param>
         public sealed override void PreUpdate (float deltaTime)
         {
+            // Ensure the gravity values are synchronised.
+            m_collision.gravity = gravity;
             m_collision.Run();
         }
 
@@ -68,7 +70,7 @@ namespace PSI
         }
 
         /// <summary>
-        /// Detects collision of objects within the scene.
+        /// Nothing atm, in the future it will trigger collision callbacks.
         /// </summary>
         /// <param name="deltaTime">How many second have passed since the last frame.</param>
         public sealed override void PostUpdate (float deltaTime)

@@ -112,7 +112,7 @@ namespace PSI
         {
             // The properties handle clamping.
             kineticFriction = kineticFriction;
-            staticFriction = staticFriction;
+            staticFriction  = staticFriction;
         }
 
         #endregion

@@ -16,44 +16,12 @@ namespace PSI
     {
         #region Members
 
-        /// <summary>
-        /// The central offset of the sphere.
-        /// </summary>
-        [SerializeField, Tooltip ("The central offset of the sphere.")]
-        Vector3 m_centre = Vector3.zero;
-
         [SerializeField, Tooltip ("The length of the radius of the sphere.")]
         float m_radius = 5f;
 
         #endregion
 
         #region Properties and getters
-
-        /// <summary>
-        /// Gets the position of the sphere in world space with the centre offset applied.
-        /// </summary>
-        public Vector3 position
-        {
-            get { return transform.position + m_centre; }
-        }
-
-        /// <summary>
-        /// Gets or sets the centre of the collider.
-        /// </summary>
-        /// <value>The desired centre.</value>
-        public Vector3 centre
-        {
-            get { return m_centre; }
-            set
-            {
-                m_centre = value;
-
-                if (m_attachedRigidbody)
-                {
-                    m_attachedRigidbody.ResetCentreOfMass();
-                }
-            }
-        }
 
         /// <summary>
         /// Gets or sets the length of the radius of the sphere.
@@ -99,26 +67,6 @@ namespace PSI
             radius = radius;
         }
 
-        /// <summary>
-        /// Updates the stored PhysicsMaterial if necessary, attaches to a Rigidbody and registers the SphereCollider
-        /// with located Physics system.
-        /// </summary>
-        protected override void OnEnable ()
-        {
-            base.OnEnable();
-
-            UpdateRigidbodyInertiaTensor();
-            m_physics.Register (this);
-        }
-
-        void OnDisable()
-        {
-            if (m_physics && this)
-            {
-                m_physics.Deregister (this);
-            }
-        }
-
         #endregion
 
         #region Functionality
@@ -132,10 +80,10 @@ namespace PSI
             if (m_attachedRigidbody)
             {
                 // Spherical moments of inertia: V(2/5mR^2, 2/5mR^2, 2/5mR^2).
-                var mass = m_attachedRigidbody.mass;
+                var mass            = m_attachedRigidbody.mass;
                 var momentOfInertia = 2f / 5f * mass * sqrRadius;
+                var inertiaTensor   = new Vector3 (momentOfInertia, momentOfInertia, momentOfInertia);
 
-                var inertiaTensor = new Vector3 (momentOfInertia, momentOfInertia, momentOfInertia);
                 m_attachedRigidbody.inertiaTensor = inertiaTensor;
             }
         }

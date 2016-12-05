@@ -8,6 +8,8 @@ using SerializeField    = UnityEngine.SerializeField;
 using Tooltip           = UnityEngine.TooltipAttribute;
 using Vector3           = UnityEngine.Vector3;
 
+using System.Collections.Generic;
+
 
 namespace PSI
 {
@@ -24,10 +26,17 @@ namespace PSI
         public enum Derived
         {
             Invalid,
-            Sphere
+            Sphere,
+            Plane
         }
 
         #region Members
+
+        /// <summary>
+        /// The central offset of the sphere.
+        /// </summary>
+        [SerializeField, Tooltip ("The central offset of the sphere.")]
+        Vector3 m_centre = Vector3.zero;
 
         /// <summary>
         /// The material containing the physical properties of the Collider object. If this is null when the object is
@@ -49,9 +58,40 @@ namespace PSI
         /// </summary>
         protected Physics m_physics = null;
 
+        /// <summary>
+        /// Contains each Collider that the current Collider is touching.
+        /// </summary>
+        private HashSet<Collider> m_touching = new HashSet<Collider>();
+
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the position of the sphere in world space with the centre offset applied.
+        /// </summary>
+        public Vector3 position
+        {
+            get { return transform.position + m_centre; }
+        }
+
+        /// <summary>
+        /// Gets or sets the centre of the collider.
+        /// </summary>
+        /// <value>The desired centre.</value>
+        public Vector3 centre
+        {
+            get { return m_centre; }
+            set
+            {
+                m_centre = value;
+
+                if (m_attachedRigidbody)
+                {
+                    m_attachedRigidbody.ResetCentreOfMass();
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the Rigidbody that the Collider is attached to. All collisions will effect this object. The Collider
@@ -73,6 +113,15 @@ namespace PSI
                 // Ensure both the collider and rigidbody are marked as static before classing it as static.
                 return !m_attachedRigidbody || !m_attachedRigidbody.enabled;
             }
+        }
+
+        /// <summary>
+        /// Gets whether the Collider is touching anything at the current point in time.
+        /// </summary>
+        /// <value>Whether the Collider is touching anything.</value>
+        public bool isTouchingAnything
+        {
+            get { return m_touching.Count > 0; }
         }
 
         #endregion
@@ -100,11 +149,31 @@ namespace PSI
         /// </summary>
         virtual protected void OnEnable()
         {
+            
             m_attachedRigidbody = FindAttachableRigidbody();
             material            = material ?? ObtainMaterial();
-            m_physics           = Physics.FindSystem();
+            UpdateRigidbodyInertiaTensor();
+
+            // For some reason Unity is changing the object without destroying it so we have to handle that situation.
+            if (!m_physics)
+            {
+                m_physics = Physics.FindSystem();
+            }
+
+            m_physics.Register (this);
 
             Assert.IsNotNull (m_physics, "Collider couldn't find a Physics system to register with.");
+        }
+
+        /// <summary>
+        /// Deregisters the object if it has been attached to a Physics system.
+        /// </summary>
+        virtual protected void OnDisable()
+        {
+            if (m_physics && this)
+            {
+                m_physics.Deregister (this);
+            }
         }
 
         /// <summary>
@@ -135,7 +204,7 @@ namespace PSI
         /// <summary>
         /// Searches the current and parent GameObject for a Rigidbody component to attach to.
         /// </summary>
-        public Rigidbody FindAttachableRigidbody()
+        protected Rigidbody FindAttachableRigidbody()
         {
             // Check the current object.
             var rigidbody = GetComponent<Rigidbody>();
@@ -147,8 +216,34 @@ namespace PSI
 
             // Check the parent.
             var parent = transform.root;
-
             return parent ? parent.GetComponent<Rigidbody>() : null;
+        }
+
+        /// <summary>
+        /// Determines whether this instance is touching the specified collider.
+        /// </summary>
+        public bool IsTouching (Collider collider)
+        {
+            return m_touching.Contains (collider);
+        }
+
+        /// <summary>
+        /// Adds the given Collider to a list of colliders that are currently "touching" this object.
+        /// </summary>
+        /// <param name="collider">The Collider to be added.</param>
+        public void StartTouching (Collider collider)
+        {
+            m_touching.Add (collider);
+        }
+
+        /// <summary>
+        /// Removes the given Collider from the list of colliders that are currently "touching" this object.
+        /// </summary>
+        /// <returns>Whether the collider was removed or not.</returns>
+        /// <param name="collider">The Collider to be removed.</param>
+        public bool StopTouching (Collider collider)
+        {
+            return m_touching.Remove (collider);
         }
 
         #endregion

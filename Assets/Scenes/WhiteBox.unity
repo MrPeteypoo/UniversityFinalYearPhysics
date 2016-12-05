@@ -99,8 +99,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 179894475}
   - 33: {fileID: 179894478}
-  - 64: {fileID: 179894477}
   - 23: {fileID: 179894476}
+  - 114: {fileID: 179894477}
   m_Layer: 0
   m_Name: Slant
   m_TagString: Untagged
@@ -150,18 +150,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &179894477
-MeshCollider:
+--- !u!114 &179894477
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 179894474}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b636bdfedae443a5bc719fa5d790c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: 
 --- !u!33 &179894478
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -331,6 +332,30 @@ Prefab:
       propertyPath: m_Name
       value: Crap
       objectReference: {fileID: 0}
+    - target: {fileID: 114000011815242282, guid: f4d319688dbf84ac4aa62def10ab39ee,
+        type: 2}
+      propertyPath: m_angularDrag
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011815242282, guid: f4d319688dbf84ac4aa62def10ab39ee,
+        type: 2}
+      propertyPath: simulateGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010939794774, guid: f4d319688dbf84ac4aa62def10ab39ee,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011815242282, guid: f4d319688dbf84ac4aa62def10ab39ee,
+        type: 2}
+      propertyPath: m_sleepThreshold
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013512936556, guid: f4d319688dbf84ac4aa62def10ab39ee, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f4d319688dbf84ac4aa62def10ab39ee, type: 2}
   m_IsPrefabParent: 0
@@ -343,8 +368,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 545957473}
   - 33: {fileID: 545957476}
-  - 64: {fileID: 545957475}
   - 23: {fileID: 545957474}
+  - 114: {fileID: 545957475}
   m_Layer: 0
   m_Name: Slant
   m_TagString: Untagged
@@ -394,18 +419,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &545957475
-MeshCollider:
+--- !u!114 &545957475
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 545957472}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b636bdfedae443a5bc719fa5d790c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: 
 --- !u!33 &545957476
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -628,8 +654,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1140134749}
   - 33: {fileID: 1140134752}
-  - 64: {fileID: 1140134751}
   - 23: {fileID: 1140134750}
+  - 114: {fileID: 1140134751}
   m_Layer: 0
   m_Name: Edge
   m_TagString: Untagged
@@ -679,18 +705,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &1140134751
-MeshCollider:
+--- !u!114 &1140134751
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1140134748}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b636bdfedae443a5bc719fa5d790c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: 
 --- !u!33 &1140134752
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -707,8 +734,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1277149192}
   - 33: {fileID: 1277149195}
-  - 64: {fileID: 1277149194}
   - 23: {fileID: 1277149193}
+  - 114: {fileID: 1277149194}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -758,18 +785,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &1277149194
-MeshCollider:
+--- !u!114 &1277149194
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1277149191}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b636bdfedae443a5bc719fa5d790c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: 
 --- !u!33 &1277149195
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -791,7 +819,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1414951074}
   - 33: {fileID: 1414951077}
-  - 64: {fileID: 1414951076}
   - 23: {fileID: 1414951075}
   m_Layer: 0
   m_Name: Roof
@@ -842,18 +869,6 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &1414951076
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1414951073}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &1414951077
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -870,8 +885,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1462442094}
   - 33: {fileID: 1462442097}
-  - 64: {fileID: 1462442096}
   - 23: {fileID: 1462442095}
+  - 114: {fileID: 1462442096}
   m_Layer: 0
   m_Name: Edge
   m_TagString: Untagged
@@ -921,18 +936,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &1462442096
-MeshCollider:
+--- !u!114 &1462442096
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1462442093}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b636bdfedae443a5bc719fa5d790c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: 
 --- !u!33 &1462442097
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -979,8 +995,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1609582544}
   - 33: {fileID: 1609582547}
-  - 64: {fileID: 1609582546}
   - 23: {fileID: 1609582545}
+  - 114: {fileID: 1609582546}
   m_Layer: 0
   m_Name: Slant
   m_TagString: Untagged
@@ -1030,18 +1046,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &1609582546
-MeshCollider:
+--- !u!114 &1609582546
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1609582543}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b636bdfedae443a5bc719fa5d790c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: 
 --- !u!33 &1609582547
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1062,7 +1079,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000014221577450, guid: f4d319688dbf84ac4aa62def10ab39ee, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.508
+      value: 5.65
       objectReference: {fileID: 0}
     - target: {fileID: 4000014221577450, guid: f4d319688dbf84ac4aa62def10ab39ee, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1101,7 +1118,7 @@ Prefab:
     - target: {fileID: 114000010939794774, guid: f4d319688dbf84ac4aa62def10ab39ee,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114000013513139820, guid: f4d319688dbf84ac4aa62def10ab39ee,
         type: 2}
@@ -1126,7 +1143,7 @@ Prefab:
     - target: {fileID: 114000011815242282, guid: f4d319688dbf84ac4aa62def10ab39ee,
         type: 2}
       propertyPath: m_mass
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1000013512936556, guid: f4d319688dbf84ac4aa62def10ab39ee, type: 2}
       propertyPath: m_IsActive
@@ -1135,30 +1152,26 @@ Prefab:
     - target: {fileID: 114000010478858954, guid: f4d319688dbf84ac4aa62def10ab39ee,
         type: 2}
       propertyPath: m_impulse
-      value: 50
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011815242282, guid: f4d319688dbf84ac4aa62def10ab39ee,
+        type: 2}
+      propertyPath: m_angularDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010939794774, guid: f4d319688dbf84ac4aa62def10ab39ee,
+        type: 2}
+      propertyPath: m_force
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011815242282, guid: f4d319688dbf84ac4aa62def10ab39ee,
+        type: 2}
+      propertyPath: simulateGravity
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f4d319688dbf84ac4aa62def10ab39ee, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1682543414 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1000013512936556, guid: f4d319688dbf84ac4aa62def10ab39ee,
-    type: 2}
-  m_PrefabInternal: {fileID: 1682543413}
---- !u!114 &1682543415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1682543414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6032aac2256c84715a25b136c78f6e92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_materialID: Test
-  m_centre: {x: 0, y: 0, z: 0}
-  m_radius: 0.5
 --- !u!1 &1697605175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,11 +1274,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114000012481991416, guid: b7dc8e4d65e254dffb4f394ca8086f58,
-        type: 2}
-      propertyPath: m_editorValues.Array.data[0].material.m_restitution
-      value: 0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b7dc8e4d65e254dffb4f394ca8086f58, type: 2}
   m_IsPrefabParent: 0
@@ -1278,8 +1286,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1751781928}
   - 33: {fileID: 1751781931}
-  - 64: {fileID: 1751781930}
   - 23: {fileID: 1751781929}
+  - 114: {fileID: 1751781930}
   m_Layer: 0
   m_Name: Edge
   m_TagString: Untagged
@@ -1329,18 +1337,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &1751781930
-MeshCollider:
+--- !u!114 &1751781930
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1751781927}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b636bdfedae443a5bc719fa5d790c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: 
 --- !u!33 &1751781931
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1362,8 +1371,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1829523123}
   - 33: {fileID: 1829523126}
-  - 64: {fileID: 1829523125}
   - 23: {fileID: 1829523124}
+  - 114: {fileID: 1829523125}
   m_Layer: 0
   m_Name: Edge
   m_TagString: Untagged
@@ -1413,18 +1422,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &1829523125
-MeshCollider:
+--- !u!114 &1829523125
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1829523122}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b636bdfedae443a5bc719fa5d790c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: 
 --- !u!33 &1829523126
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1441,8 +1451,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1877529478}
   - 33: {fileID: 1877529481}
-  - 64: {fileID: 1877529480}
   - 23: {fileID: 1877529479}
+  - 114: {fileID: 1877529480}
   m_Layer: 0
   m_Name: Slant
   m_TagString: Untagged
@@ -1492,18 +1502,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!64 &1877529480
-MeshCollider:
+--- !u!114 &1877529480
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1877529477}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b636bdfedae443a5bc719fa5d790c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: 
 --- !u!33 &1877529481
 MeshFilter:
   m_ObjectHideFlags: 0

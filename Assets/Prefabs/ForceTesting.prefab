@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_mass: 5
-  m_sleepThreshold: 0.001
+  m_sleepThreshold: 0.01
   simulateGravity: 0
   m_drag: 0
   m_angularDrag: 2
@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6032aac2256c84715a25b136c78f6e92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_materialID: Test
   m_centre: {x: 0, y: 0, z: 0}
+  m_materialID: Test
   m_radius: 0.5
 --- !u!114 &114000013513139820
 MonoBehaviour:

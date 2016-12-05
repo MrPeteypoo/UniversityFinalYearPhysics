@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Vector3 = UnityEngine.Vector3;
+
 
 namespace PSI
 {
@@ -16,6 +16,29 @@ namespace PSI
         /// Contains all dynamic Colliders in the engine.
         /// </summary>
         Colliders m_dynamic = new Colliders (100);
+
+        /// <summary>
+        /// Handles collision checking.
+        /// </summary>
+        Collision m_collision = new Collision();
+
+        /// <summary>
+        /// Handles collision response.
+        /// </summary>
+        Response m_response = new Response();
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the gravitational acceleration which is used in determining frictional forces.
+        /// </summary>
+        public Vector3 gravity
+        {
+            get { return m_response.gravity; }
+            set { m_response.gravity = value; }
+        }
 
         #endregion
 
@@ -77,6 +100,18 @@ namespace PSI
         #region Collision management
 
         /// <summary>
+        /// Prepares the system for usage.
+        /// </summary>
+        /// <param name="gravity">The initial value to use for gravity.</param>
+        public bool Initialise (Vector3 gravity)
+        {
+            m_collision.response = m_response;
+            m_response.gravity = gravity;
+
+            return true;
+        }
+
+        /// <summary>
         /// Performs a collision detection pass of registered objects. This will test every dynamic object against 
         /// every dynamic and static object, therefore the less dynamic objects the better.
         /// </summary>
@@ -88,13 +123,54 @@ namespace PSI
 
         private void CheckDynamicObjects()
         {
+            var spheres = m_dynamic.spheres;
+            var planes  = m_dynamic.planes;
+
             // Sphere.
-            for (int i = 0; i < m_dynamic.spheres.Count; ++i)
+            for (int i = 0; i < spheres.Count; ++i)
             {
+                var a = spheres[i];
+
                 // On sphere.
-                for (int j = i+1; j < m_dynamic.spheres.Count; ++j)
+                for (int j = i + 1; j < spheres.Count; ++j)
                 {
-                    Collision.SphereOnSphere (m_dynamic.spheres[i], m_dynamic.spheres[j]);
+                    var b = spheres[j];
+
+                    // Don't check collision of compound colliders.
+                    if (a.attachedRigidbody != b.attachedRigidbody)
+                    {
+                        m_collision.SphereOnSphere (a, b);
+                    }
+                }
+
+                // On plane.
+                for (int j = 0; j < planes.Count; ++j)
+                {
+                    var b = planes[j];
+
+                    // Don't check collision of compound colliders.
+                    if (a.attachedRigidbody != b.attachedRigidbody)
+                    {
+                        m_collision.SphereOnPlane (a, b);
+                    }
+                }
+            }
+
+            // Plane.
+            for (int i = 0; i < planes.Count; ++i)
+            {
+                var a = planes[i];
+
+                // On plane.
+                for (int j = i + 1; j < planes.Count; ++j)
+                {
+                    var b = planes[j]; 
+
+                    // Don't check collision of compound colliders.
+                    if (a.attachedRigidbody != b.attachedRigidbody)
+                    {
+                        m_collision.PlaneOnPlane (a, b);
+                    }
                 }
             }
         }
@@ -102,12 +178,34 @@ namespace PSI
         private void CheckDynamicAgainstStatic()
         {
             // Sphere.
-            for (int i = 0; i < m_dynamic.spheres.Count; ++i)
+            foreach (var a in m_dynamic.spheres)
             {
                 // On sphere.
-                for (int j = 0; j < m_static.spheres.Count; ++j)
+                foreach (var b in m_static.spheres)
                 {
-                    Collision.SphereOnSphere (m_dynamic.spheres[i], m_static.spheres[j]);
+                    m_collision.SphereOnSphere (a, b);
+                }
+
+                // On plane.
+                foreach (var b in m_static.planes)
+                {
+                    m_collision.SphereOnPlane (a, b);
+                }
+            }
+
+            // Plane.
+            foreach (var a in m_dynamic.planes)
+            {
+                // On sphere.
+                foreach (var b in m_static.spheres)
+                {
+                    m_collision.PlaneOnSphere (a, b);
+                }
+
+                // On plane.
+                foreach (var b in m_static.planes)
+                {
+                    m_collision.PlaneOnPlane (a, b);
                 }
             }
         }
