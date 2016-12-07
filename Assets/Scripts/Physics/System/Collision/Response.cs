@@ -135,10 +135,10 @@ namespace PSI
                 var kineticFriction = PhysicsMaterial.CalculateKineticFriction (dynamic.material, stationary.material);
                 var restitution     = PhysicsMaterial.CalculateRestitution (dynamic.material, stationary.material);
 
-                // Ensure the object is moved away.
-                StaticPositionCorrection (rigidbody, direction, intersection);
                 if (initialResponse)
                 {
+                    // Ensure the object is moved away.
+                    //StaticPositionCorrection (rigidbody, direction, intersection);
 
                     // We assume the static object has a mass so great it can't be moved and just scale by restitution.
                     var momentumDirection   = Vector3.Reflect (rigidbody.momentum, direction);
@@ -165,11 +165,11 @@ namespace PSI
                 var surfaceB = new PhysicsMaterial.Result();
                 PhysicsMaterial.Combine (a.material, b.material, out surfaceA, out surfaceB);
 
-                // Adjust the position.
-                DynamicPositionCorrection (a.attachedRigidbody, b.attachedRigidbody, direction, intersection);
                 // Correct the linear and rotational motion of the object.
                 if (initialResponse)
                 {
+                    // Adjust the position.
+                    //DynamicPositionCorrection (a.attachedRigidbody, b.attachedRigidbody, direction, intersection);
 
                     CorrectLinearMotion (a.attachedRigidbody, b.attachedRigidbody, surfaceA, surfaceB, direction);
                     CorrectAngularMotion (a.attachedRigidbody, b.attachedRigidbody, surfaceA, surfaceB, direction);
